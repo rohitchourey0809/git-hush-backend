@@ -15,16 +15,20 @@ app.use(bodyParser.json());
 
 app.use("/api", bookRoutes);
 
-const mongoUri =
-  "mongodb+srv://rohit1995chourey:rohit321@nodeapp.r62ctns.mongodb.net/?retryWrites=true&w=majority&appName=NodeApp";
+// Read MongoDB URI from environment variables
+const mongoUri = process.env.MONGODB_URI;
 if (!mongoUri) {
   console.error("MONGODB_URI is not defined");
   process.exit(1);
 }
+
 mongoose
-  .connect(mongoUri)
+  .connect(mongoUri, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  })
   .then(() => console.log("MongoDB connected"))
-  .catch((err) => console.log(err));
+  .catch((err) => console.error("MongoDB connection error:", err)); // Added error handling
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
