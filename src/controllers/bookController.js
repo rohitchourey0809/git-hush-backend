@@ -1,41 +1,22 @@
 import Book from "../models/Book.js";
 import Review from "../models/Review.js";
 
-export const getBooks = async (req, res) => {
-  try {
-    const books = await Book.find();
-    res.json(books);
-  } catch (err) {
-    res.status(500).json({ error: err.message });
-  }
-};
+// export const searchBooks = async (req, res) => {
+//   try {
+//     const query = req.query.query || "";
 
-export const getBookById = async (req, res) => {
-  try {
-    const book = await Book.findById(req.params.id).populate();
-    if (!book) return res.status(404).json({ error: "Book not found" });
-    res.json(book);
-  } catch (err) {
-    res.status(500).json({ error: err.message });
-  }
-};
-
-export const searchBooks = async (req, res) => {
-  try {
-    const query = req.query.query || "";
-
-    const books = await Book.find({
-      $or: [
-        { title: { $regex: query, $options: "i" } },
-        { author: { $regex: query, $options: "i" } },
-        { genre: { $regex: query, $options: "i" } },
-      ],
-    });
-    res.json(books);
-  } catch (err) {
-    res.status(500).json({ error: err.message });
-  }
-};
+//     const books = await Book.find({
+//       $or: [
+//         { title: { $regex: query, $options: "i" } },
+//         { author: { $regex: query, $options: "i" } },
+//         { genre: { $regex: query, $options: "i" } },
+//       ],
+//     });
+//     res.json(books);
+//   } catch (err) {
+//     res.status(500).json({ error: err.message });
+//   }
+// };
 
 export const postBooks = async (req, res) => {
   try {
@@ -92,3 +73,24 @@ export const sortbytitle = async (req, res) => {
   }
 };
 
+export const getBooks = async (req, res) => {
+  const books = await Book.find();
+  // const books = await Book.find().populate("reviews");
+  res.json(books);
+};
+
+export const getBookById = async (req, res) => {
+  // const book = await Book.findById(req.params.id).populate("reviews");
+
+  const book = await Book.findById(req.params.id);
+  if (!book) {
+    return res.status(404).json({ message: "Book not found" });
+  }
+  res.json(book);
+};
+
+export const searchBooks = async (req, res) => {
+  const { query } = req.query;
+  const books = await Book.find({ $text: { $search: query } });
+  res.json(books);
+};

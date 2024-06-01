@@ -3,6 +3,8 @@ import mongoose from "mongoose";
 import cors from "cors";
 import bodyParser from "body-parser";
 import bookRoutes from "./routes/bookRoutes.js"; // Note: specify the file extension
+import reviewRoutes from "./routes/reviewRoutes.js";
+import userRoutes from "./routes/userRoutes.js";
 import dotenv from "dotenv";
 
 dotenv.config();
@@ -16,7 +18,10 @@ app.use(
 );
 app.use(bodyParser.json());
 
-app.use("/api", bookRoutes);
+
+app.use("/api/books", bookRoutes);
+app.use("/api/reviews", reviewRoutes);
+app.use("/api/users", userRoutes);
 
 // Read MongoDB URI from environment variables
 const mongoUri = process.env.MONGODB_URI;

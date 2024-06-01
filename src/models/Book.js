@@ -8,6 +8,7 @@ const BookSchema = new Schema({
   genre: { type: String, required: true },
   description: { type: String },
   averageRating: { type: Number, default: 0 },
+  reviews: [{ type: Schema.Types.ObjectId, ref: "reviews" }],
 });
 
 const Book = mongoose.model("hushbooks", BookSchema);
