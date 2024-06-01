@@ -1,6 +1,6 @@
-// models/Book.js
-const mongoose = require("mongoose");
-const Schema = mongoose.Schema;
+import mongoose from "mongoose";
+
+const { Schema } = mongoose;
 
 const BookSchema = new Schema({
   title: { type: String, required: true },
@@ -10,4 +10,6 @@ const BookSchema = new Schema({
   averageRating: { type: Number, default: 0 },
 });
 
-module.exports = mongoose.model("hushbook", BookSchema);
+const Book = mongoose.model("Book", BookSchema);
+
+export default Book;

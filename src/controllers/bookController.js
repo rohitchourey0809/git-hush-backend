@@ -1,8 +1,7 @@
-// controllers/bookController.js
-const Book = require("../models/Book");
-const Review = require("../models/Review");
+import Book from "../models/Book.js";
+import Review from "../models/Review.js";
 
-exports.getBooks = async (req, res) => {
+export const getBooks = async (req, res) => {
   try {
     const books = await Book.find();
     res.json(books);
@@ -11,7 +10,7 @@ exports.getBooks = async (req, res) => {
   }
 };
 
-exports.getBookById = async (req, res) => {
+export const getBookById = async (req, res) => {
   try {
     const book = await Book.findById(req.params.id).populate();
     if (!book) return res.status(404).json({ error: "Book not found" });
@@ -21,7 +20,7 @@ exports.getBookById = async (req, res) => {
   }
 };
 
-exports.searchBooks = async (req, res) => {
+export const searchBooks = async (req, res) => {
   try {
     const query = req.query.query || "";
 
@@ -38,7 +37,7 @@ exports.searchBooks = async (req, res) => {
   }
 };
 
-exports.postBooks = async (req, res) => {
+export const postBooks = async (req, res) => {
   try {
     const { title, author, genre, description, averageRating } = req.body;
     const book = new Book({
@@ -55,7 +54,7 @@ exports.postBooks = async (req, res) => {
   }
 };
 
-exports.submitReview = async (req, res) => {
+export const submitReview = async (req, res) => {
   try {
     const { bookId, rating, comment } = req.body;
     const review = new Review({ bookId, rating, comment });
