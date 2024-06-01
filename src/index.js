@@ -11,8 +11,13 @@ app.use(bodyParser.json());
 
 app.use("/api", bookRoutes);
 
+const mongoUri = process.env.MONGO_URI;
+if (!mongoUri) {
+  console.error("MONGODB_URI is not defined");
+  process.exit(1);
+}
 mongoose
-  .connect(process.env.MONGO_URI)
+  .connect(mongoUri)
   .then(() => console.log("MongoDB connected"))
   .catch((err) => console.log(err));
 
