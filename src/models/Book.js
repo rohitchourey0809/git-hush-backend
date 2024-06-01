@@ -10,6 +10,6 @@ const BookSchema = new Schema({
   averageRating: { type: Number, default: 0 },
 });
 
-const Book = mongoose.model("hashbooks", BookSchema);
+const Book = mongoose.model("hushbooks", BookSchema);
 
 export default Book;
