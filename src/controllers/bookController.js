@@ -64,3 +64,31 @@ export const submitReview = async (req, res) => {
     res.status(400).json({ error: err.message });
   }
 };
+
+export const sortbytitle = async (req, res) => {
+  try {
+    const { page = 1, sort = "title" } = req.query;
+    const limit = 10; // Adjust as needed
+    const skip = (page - 1) * limit;
+
+    const books = await Book.find()
+      .sort({ [sort]: 1 }) // Sort by the specified field
+      .skip(skip)
+      .limit(limit);
+
+    // Get total count for pagination
+    const totalCount = await Book.countDocuments();
+
+    // Calculate total pages
+    const totalPages = Math.ceil(totalCount / limit);
+
+    res.json({
+      data: books,
+      currentPage: parseInt(page),
+      totalPages,
+    });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+

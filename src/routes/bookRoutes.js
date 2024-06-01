@@ -4,6 +4,7 @@ import * as bookController from "../controllers/bookController.js"; // Note: spe
 const router = express.Router();
 
 router.get("/books", bookController.getBooks);
+router.get("/books", bookController.sortbytitle);
 router.post("/books", bookController.postBooks);
 router.get("/books/:id", bookController.getBookById);
 router.get("/search", bookController.searchBooks);
