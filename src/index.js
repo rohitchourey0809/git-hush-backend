@@ -6,12 +6,17 @@ const bookRoutes = require("./routes/bookRoutes");
 const app = express();
 require("dotenv").config();
 
-app.use(cors());
+app.use(
+  cors({
+    credentials: true,
+  })
+);
 app.use(bodyParser.json());
 
 app.use("/api", bookRoutes);
 
-const mongoUri = process.env.MONGODB_URI;
+const mongoUri =
+  "mongodb+srv://rohit1995chourey:rohit321@nodeapp.r62ctns.mongodb.net/?retryWrites=true&w=majority&appName=NodeApp";
 if (!mongoUri) {
   console.error("MONGODB_URI is not defined");
   process.exit(1);
