@@ -11,7 +11,7 @@ app.use(bodyParser.json());
 
 app.use("/api", bookRoutes);
 
-const mongoUri = process.env.MONGO_URI;
+const mongoUri = process.env.MONGODB_URI;
 if (!mongoUri) {
   console.error("MONGODB_URI is not defined");
   process.exit(1);
