@@ -68,7 +68,7 @@ export const submitReview = async (req, res) => {
 export const sortbytitle = async (req, res) => {
   try {
     const { page = 1, sort = "title" } = req.query;
-    const limit = 10; // Adjust as needed
+    const limit = 5; // Adjust as needed
     const skip = (page - 1) * limit;
 
     const books = await Book.find()
