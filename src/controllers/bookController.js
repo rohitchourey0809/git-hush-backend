@@ -1,3 +1,4 @@
+import mongoose from "mongoose";
 import Book from "../models/Book.js";
 import Review from "../models/Review.js";
 
@@ -66,45 +67,116 @@ export const sortbytitle = async (req, res) => {
 
 export const getBooks = async (req, res) => {
   // const books = await Book.find();
-  const books = await Book.find().populate("reviews");
+  const books = await Book.find();
   res.json(books);
 };
 
 export const getBookById = async (req, res) => {
-  const book = await Book.findById(req.params.id).populate("reviews");
+  const { id } = req.params;
 
-  // const book = await Book.findById(req.params.id);
-  if (!book) {
-    return res.status(404).json({ message: "Book not found" });
+  if (!mongoose.Types.ObjectId.isValid(id)) {
+    return res.status(400).json({ message: "Invalid book ID" });
   }
-  res.json(book);
-};
 
-export const searchBooks = async (req, res) => {
   try {
-    const {
-      query,
-      page = 1,
-      limit = 10,
-      sortBy = "title",
-      order = "asc",
-    } = req.query;
-    if (!query) {
-      return res.status(400).json({ message: "Query parameter is required" });
+    const book = await Book.findById(id).populate("reviews");
+
+    if (!book) {
+      return res.status(404).json({ message: "Book not found" });
     }
 
-    const sortOptions = {};
-    sortOptions[sortBy] = order === "asc" ? 1 : -1;
-
-    const books = await Book.find({ $text: { $search: query } })
-      .sort(sortOptions)
-      .skip((page - 1) * limit)
-      .limit(Number(limit));
-
-    res.json(books);
+    res.json(book);
   } catch (error) {
-    console.error("Error searching books:", error);
+    console.error("Error fetching book by id:", error);
     res.status(500).json({ message: "Server error" });
   }
 };
 
+export const searchBooks = async (req, res) => {
+   const { query } = req.query;
+
+   try {
+     // Perform a case-insensitive search for books matching the query
+     const books = await Book.find({
+       $or: [
+         { title: { $regex: query, $options: "i" } },
+         { author: { $regex: query, $options: "i" } },
+         { genre: { $regex: query, $options: "i" } },
+       ],
+     });
+
+     res.json(books);
+   } catch (error) {
+     console.error("Error searching books:", error);
+     res.status(500).json({ error: "Failed to search books" });
+   }
+};
+
+
+export const markAsFavorite = async (req, res) => {
+  const { id } = req.params;
+  // const userId = req.user.id;
+
+  try {
+    const book = await Book.findById(id);
+
+    if (!book) {
+      return res.status(404).json({ message: "Book not found" });
+    }
+
+    // Check if the book is already favorited by the user
+    // const isFavorited = book.favorites.includes(userId);
+
+    // if (isFavorited) {
+    //   // Remove user from favorites
+    //   book.favorites = book.favorites.filter(
+    //     (favUserId) => favUserId.toString() !== userId
+    //   );
+    // } else {
+      // Add user to favorites
+      // book.favorites.push(userId);
+    // }
+
+    await book.save();
+
+    res
+      .status(200)
+      .json({
+        message: isFavorited
+          ? "Book removed from favorites"
+          : "Book added to favorites",
+      });
+  } catch (error) {
+    console.error("Error marking book as favorite:", error);
+    res.status(500).json({ message: "Server error" });
+  }
+};
+
+
+export const postFavourate = async (req, res) => {
+  try {
+    // Assuming the request body contains the favorite book data
+    const favoriteBook = req.body;
+
+    // You can process the favorite book data here, such as storing it in a database
+
+    // Send a success response
+    res
+      .status(200)
+      .json({ message: "Favorite book added successfully", favoriteBook });
+  } catch (error) {
+    // If an error occurs, send an error response
+    res.status(500).json({ error: "Internal server error" });
+  }
+};
+
+export const getFavourite = async (req, res) => {
+  try {
+    // Retrieve favorite books from the database
+    const favoriteBooks = await Book.find();
+    res.json(favoriteBooks);
+  } catch (error) {
+    console.error("Error fetching favorite books:", error);
+    res.status(500).json({ error: "Failed to fetch favorite books" });
+  }
+};

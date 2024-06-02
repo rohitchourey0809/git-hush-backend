@@ -4,14 +4,16 @@ import Review from "../models/Review.js";
 export const submitReview = async (req, res) => {
   try {
     const { bookId, rating, comment } = req.body;
-    const userId = req.user.id;
+    // const userId = req.user.id;
 
     // Create a new review
-    const review = new Review({ bookId, user: userId, rating, comment });
+    const review = new Review({ bookId,  rating, comment });
+    console.log("review", review);
     await review.save();
 
     // Find the book by ID
-    const book = await Book.findById(bookId).populate("reviews");
+    const book = await Book.findById(req.body.bookId).populate("reviews");
+    console.log("book", book);
 
     if (!book) {
       return res.status(404).json({ message: "Book not found" });
