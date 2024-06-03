@@ -1,6 +1,48 @@
 Testing Endpoints
 You can test the following endpoints:
 
+
+
+## API Reference
+
+Api:  https://git-hush-backend.vercel.app/
+
+#### POST 
+
+```http
+ POST /api/users/register
+```
+
+#### Get all items by id
+
+```http
+  GET /books/:id
+```
+
+#### POST item
+
+```http
+GET /api/books
+```
+
+#### GET item
+
+```http
+  /api/books/search?query=searchTerm
+```
+
+#### POST item
+
+```http
+ POST /api/users/favorites
+```
+
+
+
+
+
+
+
 POST /api/users/register - Register a new user.
 POST /api/users/login - Login user and get a token.
 GET /api/books - Get a list of books.
