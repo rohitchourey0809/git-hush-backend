@@ -180,3 +180,28 @@ export const getFavourite = async (req, res) => {
     res.status(500).json({ error: "Failed to fetch favorite books" });
   }
 };
+
+
+
+export const searchandpagination = async (req, res) => {
+  try {
+    const { q, page = 1, limit = 5 } = req.query;
+    const searchQuery = q ? { title: new RegExp(q, 'i') } : {};
+    const options = {
+      page: parseInt(page, 10),
+      limit: parseInt(limit, 10),
+    };
+
+    const books = await Book.find(searchQuery)
+      .skip((options.page - 1) * options.limit)
+      .limit(options.limit);
+
+    const totalBooks = await Book.countDocuments(searchQuery);
+    res.json({
+      books,
+      total: totalBooks,
+    });
+  } catch (error) {
+    res.status(500).json({ message: 'Failed to fetch books', error });
+  }
+}
