@@ -16,13 +16,13 @@ Api:  https://git-hush-backend.vercel.app/
 #### Get all items by id
 
 ```http
-  GET /books/:id
+   /books/:id
 ```
 
-#### POST item
+#### GET item
 
 ```http
-GET /api/books
+ /api/books
 ```
 
 #### GET item
