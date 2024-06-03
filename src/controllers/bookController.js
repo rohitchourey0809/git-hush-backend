@@ -1,23 +1,5 @@
 import mongoose from "mongoose";
 import Book from "../models/Book.js";
-import Review from "../models/Review.js";
-
-// export const searchBooks = async (req, res) => {
-//   try {
-//     const query = req.query.query || "";
-
-//     const books = await Book.find({
-//       $or: [
-//         { title: { $regex: query, $options: "i" } },
-//         { author: { $regex: query, $options: "i" } },
-//         { genre: { $regex: query, $options: "i" } },
-//       ],
-//     });
-//     res.json(books);
-//   } catch (err) {
-//     res.status(500).json({ error: err.message });
-//   }
-// };
 
 export const postBooks = async (req, res) => {
   try {

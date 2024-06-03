@@ -11,8 +11,7 @@ const BookSchema = new Schema({
   reviews: [{ type: Schema.Types.ObjectId, ref: "review" }],
 });
 
-// Create a text index on the title and author field
-BookSchema.index({ title: 'text', author: 'text' });
+
 
 
 const Book = mongoose.model("hushbook", BookSchema);
