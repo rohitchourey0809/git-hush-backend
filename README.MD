@@ -34,6 +34,13 @@ GET /api/books
 #### POST item
 
 ```http
+/api/reviews
+```
+
+
+#### POST item
+
+```http
  POST /api/users/favorites
 ```
 
